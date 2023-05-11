@@ -10,6 +10,77 @@ import XCTest
 
 class LinkedListTests: XCTestCase {
     
+    func testSizeOfEmptyList() throws {
+        let linkedList = LinkedList<Int>()
+        XCTAssertEqual(linkedList.total, 0)
+    }
+    
+    func testSizeAddingElementsIncreasesSize() throws {
+        let linkedList = LinkedList<String>()
+        linkedList.add("lala")
+        XCTAssertEqual(linkedList.total, 1)
+        linkedList.add("lolo")
+        XCTAssertEqual(linkedList.total, 2)
+    }
+    
+    func testSizeWhenDeletingElements() throws {
+        let linkedList = LinkedList<String>()
+        linkedList.add("lala")
+        linkedList.add("lolo")
+        linkedList.add("lulu")
+        
+        linkedList.delete("lolo")
+        XCTAssertEqual(linkedList.total, 2)
+        
+        linkedList.delete("lala")
+        XCTAssertEqual(linkedList.total, 1)
+
+        linkedList.delete("lulu")
+        XCTAssertEqual(linkedList.total, 0)
+    }
+    
+    func testGetLastElementSequentally() throws {
+        let linkedList = LinkedList<String>()
+        linkedList.add("1")
+        
+        XCTAssertEqual(linkedList.getLastNodeWithoutRecursivity()?.data, "1")
+        
+        linkedList.add("2")
+        
+        XCTAssertEqual(linkedList.getLastNodeWithoutRecursivity()?.data, "2")
+    
+        linkedList.delete("2")
+
+        XCTAssertEqual(linkedList.getLastNodeWithoutRecursivity()?.data, "1")
+        XCTAssertEqual(linkedList.total, 1)
+
+        linkedList.delete("1")
+
+        XCTAssertNil(linkedList.getLastNodeWithoutRecursivity()?.data)
+        XCTAssertEqual(linkedList.total, 0)
+    }
+    
+    func testGetLastElementNonSequentally() throws {
+        let linkedList = LinkedList<String>()
+        linkedList.add("1")
+        linkedList.add("2")
+        linkedList.add("3")
+        
+        XCTAssertEqual(linkedList.getLastNodeWithoutRecursivity()?.data, "3")
+        
+        linkedList.delete("2")
+        
+        XCTAssertEqual(linkedList.getLastNodeWithoutRecursivity()?.data, "3")
+        
+        linkedList.delete("1")
+        
+        XCTAssertEqual(linkedList.getLastNodeWithoutRecursivity()?.data, "3")
+        
+        linkedList.delete("3")
+        
+        XCTAssertNil(linkedList.getLastNodeWithoutRecursivity()?.data)
+    }
+    
     func testDeleteNodeInLinkedList() throws {
         let linkedList = LinkedList<Int>()
         linkedList.add(2)
@@ -351,4 +422,28 @@ class LinkedListTests: XCTestCase {
         linkedList.printFirstNode()
         XCTAssertEqual(console.printed, nil)
     }
+    
+    func test_qasjhadk() {
+        let console = ConsoleViewer()
+        let linkedList = LinkedList<Int>(console: console)
+        linkedList.printAllElementsWithRecursivity()
+        XCTAssertEqual(console.printed, "")
+    }
+    
+//    func test_qasjhadkasdf() {
+//        let console = ConsoleViewer()
+//        let linkedList = LinkedList<Int>(console: console)
+//        linkedList.add(10)
+//        linkedList.printAllElementsWithRecursivity()
+//        XCTAssertEqual(console.printed, "10")
+//    }
+
+//    func test_qasjhadkasdfxcvxcv() {
+//        let console = ConsoleViewer()
+//        let linkedList = LinkedList<Int>(console: console)
+//        linkedList.add(1)
+//        linkedList.add(2)
+//        linkedList.printAllElementsWithRecursivity()
+//        XCTAssertEqual(console.printed, "1,2")
+//    }
 }

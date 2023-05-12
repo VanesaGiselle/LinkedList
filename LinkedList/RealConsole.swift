@@ -8,7 +8,7 @@
 import Foundation
 
 class RealConsole: Console {
-    func print(_ message: String?) {
+    func print(_ message: String) {
         print(message)
     }
 }

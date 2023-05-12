@@ -8,5 +8,5 @@
 import Foundation
 
 protocol Console {
-    func print(_ message: String?)
+    func print(_ message: String)
 }

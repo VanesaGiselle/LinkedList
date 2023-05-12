@@ -8,9 +8,9 @@
 import Foundation
 
 class ConsoleViewer: Console {
-    private(set) var printed: String?
+    private(set) var printed: [String] = []
 
-    func print(_ message: String?) {
-        printed = message
+    func print(_ message: String) {
+        printed.append(message)
     }
 }

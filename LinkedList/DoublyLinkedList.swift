@@ -1,20 +1,13 @@
 //
-//  LinkedList.swift
+//  DoublyLinkedList.swift
 //  LinkedList
 //
-//  Created by Vanesa Korbenfeld on 02/05/2023.
+//  Created by Vanesa Korbenfeld on 12/05/2023.
 //
 
 import Foundation
 
-// Linked list o lista enlazada ->
-// Cómo se implementa?
-// Cuáles son las ventajas y desventajas?
-// Crear objetos en swift como para poder implementarla.
-// Todo lo siguiente con tests:
-// Crear objetos para poder implementarlo con tests.
-
-class LinkedList<T: Equatable> {
+class DoublyLinkedList<T: Equatable> {
     class Node<T: Equatable>: Equatable {
         static func == (lhs: Node, rhs: Node) -> Bool {
             let sameNext = (lhs.next?.data == rhs.next?.data) || (lhs.next?.data == nil && rhs.next?.data == nil)
@@ -23,19 +16,18 @@ class LinkedList<T: Equatable> {
         
         var data: T
         var next: Node?
+        var previous: Node?
         
-        init(data: T, next: Node?){
+        init(data: T, previous: Node?, next: Node?){
             self.data = data
             self.next = next
+            self.previous = previous
         }
     }
-    private var console: Console?
-    private var head: Node<T>?
-    internal var size: Int = 0
     
-    public var firstElement: Node<T>? {
-        self.head
-    }
+    private var console: Console?
+    private(set) var head: Node<T>?
+    internal var size: Int = 0
     
     init() {}
     
@@ -45,10 +37,10 @@ class LinkedList<T: Equatable> {
     
     func add(_ data: T) {
         if head == nil {
-            head = Node(data: data, next: nil)
+            head = Node(data: data, previous: nil, next: nil)
         } else {
             if let last = getLastNodeWithRecursivity(head) {
-                last.next = Node(data: data, next: nil)
+                last.next = Node(data: data, previous: last, next: nil)
             }
         }
         size += 1
@@ -288,3 +280,4 @@ class LinkedList<T: Equatable> {
         return head?.data
     }
 }
+

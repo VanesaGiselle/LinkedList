@@ -8,9 +8,9 @@
 import Foundation
 
 class ConsoleViewer: Console {
-    private(set) var printed: [String] = []
+    private(set) var lines: String = ""
 
     func print(_ message: String) {
-        printed.append(message)
+        lines = lines.isEmpty ? message : lines + ", " + message
     }
 }

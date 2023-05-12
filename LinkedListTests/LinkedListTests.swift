@@ -48,33 +48,33 @@ class LinkedListTests: XCTestCase {
     func testAddHeadInLinkedList() throws {
         let linkedList = LinkedList<Int>()
         linkedList.add(8)
-        XCTAssertEqual(linkedList.head, LinkedList.Node(data: 8, next: nil))
+        XCTAssertEqual(linkedList.firstElement, LinkedList.Node(data: 8, next: nil))
     }
     
     func testAddWithZeroData() throws {
         let linkedList = LinkedList<Int>()
         linkedList.add(0)
-        XCTAssertEqual(linkedList.head, LinkedList.Node(data: 0, next: nil))
+        XCTAssertEqual(linkedList.firstElement, LinkedList.Node(data: 0, next: nil))
     }
     
     func testAddWithNegativeNumberData() throws {
         let linkedList = LinkedList<Int>()
         linkedList.add(-2)
-        XCTAssertEqual(linkedList.head, LinkedList.Node(data: -2, next: nil))
+        XCTAssertEqual(linkedList.firstElement, LinkedList.Node(data: -2, next: nil))
     }
     
     func testHeadWithMoreNodesInLinkedList() throws {
         let linkedList = LinkedList<Int>()
         linkedList.add(8)
         linkedList.add(5)
-        XCTAssertEqual(linkedList.head?.data, 8)
+        XCTAssertEqual(linkedList.firstElement?.data, 8)
     }
     
     func testAddHeadWithMoreNodesInLinkedList() throws {
         let linkedList = LinkedList<Int>()
         linkedList.add(8)
         linkedList.add(5)
-        XCTAssertEqual(linkedList.head?.data, 8)
+        XCTAssertEqual(linkedList.firstElement?.data, 8)
     }
     
     func testGetLastNodeWithRecursivityInLinkedList() throws {
@@ -167,6 +167,19 @@ class LinkedListTests: XCTestCase {
         linkedList.add(4)
         XCTAssertEqual(linkedList.firstNodeWithoutRecursivity({ return $0?.data == 4 ? $0 : nil
         }), LinkedList.Node(data: 4, next: nil))
+    }
+    
+    func testFirstElement_InEmptyLinkedList() throws {
+        let linkedList = LinkedList<Int>()
+        XCTAssertEqual(linkedList.firstElement?.data, nil)
+    }
+    
+    func testFirstElement_MultipleElementsInLinkedList() throws {
+        let linkedList = LinkedList<Int>()
+        linkedList.add(8)
+        linkedList.add(5)
+        linkedList.add(4)
+        XCTAssertEqual(linkedList.firstElement?.data, 8)
     }
     
     func testFirstNodeWithRecursivity_ConditionDontFoundInLinkedList() throws {
@@ -294,14 +307,14 @@ class LinkedListTests: XCTestCase {
         linkedList.add(1)
         linkedList.add(2)
         linkedList.printAllElementsWithoutRecursivity()
-        XCTAssertEqual(console.printed, ["1", "2"])
+        XCTAssertEqual(console.lines, "1, 2")
     }
     
     func testPrintAllElementsWithoutRecursivityInEmptyLinkedList() throws {
         let console = ConsoleViewer()
         let linkedList = LinkedList<Int>(console: console)
         linkedList.printAllElementsWithoutRecursivity()
-        XCTAssertEqual(console.printed, [])
+        XCTAssertEqual(console.lines, "")
     }
     
     func testPrintLastNodeWithoutRecursivityInLinkedList() throws {
@@ -310,14 +323,14 @@ class LinkedListTests: XCTestCase {
         linkedList.add(1)
         linkedList.add(2)
         linkedList.printLastNodeWithoutRecursivity()
-        XCTAssertEqual(console.printed, ["2"])
+        XCTAssertEqual(console.lines, "2")
     }
     
     func testPrintLastNodeWithoutRecursivityInEmptyLinkedList() throws {
         let console = ConsoleViewer()
         let linkedList = LinkedList<Int>(console: console)
         linkedList.printLastNodeWithoutRecursivity()
-        XCTAssertEqual(console.printed, [])
+        XCTAssertEqual(console.lines, "")
     }
     
     func testPrintLastNodeWithRecursivityInLinkedList() throws {
@@ -326,14 +339,14 @@ class LinkedListTests: XCTestCase {
         linkedList.add(1)
         linkedList.add(2)
         linkedList.printLastNodeWithRecursivity()
-        XCTAssertEqual(console.printed, ["2"])
+        XCTAssertEqual(console.lines, "2")
     }
     
     func testPrintLastNodeWithRecursivityInEmptyLinkedList() throws {
         let console = ConsoleViewer()
         let linkedList = LinkedList<Int>(console: console)
         linkedList.printLastNodeWithRecursivity()
-        XCTAssertEqual(console.printed, [])
+        XCTAssertEqual(console.lines, "")
     }
     
     func testPrintFirstNodeWithRecursivityInLinkedList() throws {
@@ -342,14 +355,14 @@ class LinkedListTests: XCTestCase {
         linkedList.add(1)
         linkedList.add(2)
         linkedList.printFirstNode()
-        XCTAssertEqual(console.printed, ["1"])
+        XCTAssertEqual(console.lines, "1")
     }
     
     func testPrintFirstNodeWithRecursivityInEmptyLinkedList() throws {
         let console = ConsoleViewer()
         let linkedList = LinkedList<Int>(console: console)
         linkedList.printFirstNode()
-        XCTAssertEqual(console.printed, [])
+        XCTAssertEqual(console.lines, "")
     }
     
     func testPrintAllElementsWithRecursivityInLinkedList() throws {
@@ -358,14 +371,14 @@ class LinkedListTests: XCTestCase {
         linkedList.add(1)
         linkedList.add(2)
         linkedList.printAllElementsWithRecursivity()
-        XCTAssertEqual(console.printed, ["1", "2"])
+        XCTAssertEqual(console.lines, "1, 2")
     }
     
     func testPrintAllElementsWithRecursivityInEmptyLinkedList() throws {
         let console = ConsoleViewer()
         let linkedList = LinkedList<Int>(console: console)
         linkedList.printAllElementsWithRecursivity()
-        XCTAssertEqual(console.printed, [""])
+        XCTAssertEqual(console.lines, "")
     }
     
     func testPrintAllElementsWithRecursivityWithMultipleNodesInLinkedList() throws {
@@ -379,6 +392,6 @@ class LinkedListTests: XCTestCase {
         linkedList.add(6)
 
         linkedList.printAllElementsWithRecursivity()
-        XCTAssertEqual(console.printed, ["1", "2", "3", "4", "5", "6"])
+        XCTAssertEqual(console.lines, "1, 2, 3, 4, 5, 6")
     }
 }

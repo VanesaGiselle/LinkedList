@@ -29,9 +29,15 @@ class LinkedList<T: Equatable> {
             self.next = next
         }
     }
+    private var console: Console?
+    private(set) var head: Node<T>?
+    internal var total: Int = 0
     
-    internal var head: Node<T>?
-    internal var total: Int = 1
+    init() {}
+    
+    init(console: Console) {
+        self.console = console
+    }
     
     func add(_ data: T) {
         if head == nil {
@@ -50,6 +56,7 @@ class LinkedList<T: Equatable> {
         
         if head?.data == data {
             head = head?.next
+            total -= 1
             return
         }
         
@@ -60,6 +67,7 @@ class LinkedList<T: Equatable> {
             }
             control = control?.next
         }
+        total -= 1
     }
     
     func getLastNodeWithoutRecursivity() -> Node<T>? {
@@ -74,7 +82,8 @@ class LinkedList<T: Equatable> {
         return last
     }
     
-    func getLastNodeWithRecursivity(_ node: Node<T>?) -> Node<T>? {
+    func getLastNodeWithRecursivity(_ node: Node<T>? = nil) -> Node<T>? {
+        let node = node ?? head
         if node?.next == nil {
             return node
         }
@@ -94,12 +103,14 @@ class LinkedList<T: Equatable> {
         return nodeAtPosition
     }
     
-    func getNodeAtPositionWithRecursivity(_ position: Int,_ node: Node<T>?) -> Node<T>? {
+    func getNodeAtPositionWithRecursivity(_ position: Int,_ node: Node<T>? = nil) -> Node<T>? {
+        let node = node ?? head
+
         if position == 0 {
             return node
         }
         
-        if node == nil {
+        if node?.next == nil {
             return nil
         }
         
@@ -120,12 +131,13 @@ class LinkedList<T: Equatable> {
         return nodeFound
     }
     
-    func firstNodeWithRecursivity(_ condition: ((Node<T>?) -> Node<T>?), _ node: Node<T>?) -> Node<T>? {
+    func firstNodeWithRecursivity(_ condition: ((Node<T>?) -> Node<T>?), _ node: Node<T>? = nil) -> Node<T>? {
+        let node = node ?? head
         if condition(node) != nil {
             return node
         }
         
-        if node == nil {
+        if node?.next == nil {
             return nil
         }
         
@@ -151,49 +163,81 @@ class LinkedList<T: Equatable> {
         return nodesFound
     }
     
-    func filterNodeWithRecursivity(_ condition: ((Node<T>?) -> Node<T>?), _ node: Node<T>?) -> [Node<T>?] {
-        if node == nil {
+    func filterNodeWithRecursivity(_ condition: ((Node<T>?) -> Node<T>?), _ node: Node<T>? = nil) -> [Node<T>?] {
+        let node = node ?? head
+
+        if node?.next == nil && condition(node) != nil {
+            return [node]
+        }
+        
+        if node?.next == nil {
             return []
         }
         
         return (condition(node) != nil ? [node] : []) + filterNodeWithRecursivity(condition, node?.next)
     }
     
-    // Imprimir toda una linked list por pantalla (Con recursividad y sin recursividad)
-    
     func printAllElementsWithoutRecursivity() {
         var node: Node? = head
         
-        while node?.next != nil {
-            print("\(String(describing: node?.data))")
+        while node != nil {
+            guard let data = node?.data else {
+                return
+            }
+            console?.print(String(describing: data))
             node = node?.next
         }
     }
     
-    func printAllElementsRecursivity(_ node: Node<T>?) {
-        if node == nil {
+    func printAllElementsWithRecursivity(_ node: Node<T>? = nil) {
+        if total == 0 {
+            console?.print("")
             return
         }
-        print("\(String(describing: node?.data))")
-        return printAllElementsRecursivity(node?.next)
+        
+        let node = node ?? head
+        
+        guard let data = node?.data else {
+            return
+        }
+        
+        console?.print(String(describing: data))
+
+        if node?.next == nil {
+            return
+        }
+
+        return printAllElementsWithRecursivity(node?.next)
     }
 
     // Imprimir el último elemento de una linked list. (con recursividad y sin recursividad)
     
     func printLastNodeWithoutRecursivity() {
-        var nextNode: Node<T>?
+        var node: Node<T>? = head
         var last: T?
         
-        while nextNode?.next != nil {
-            last = head?.data
-            nextNode = head?.next
+        while node != nil {
+            last = node?.data
+            node = node?.next
         }
-        print(String(describing: last))
+        
+        guard let last = last else {
+            return
+        }
+
+        console?.print(String(describing: last))
     }
     
-    func printLastNodeWithRecursivity(_ node: Node<T>?) {
+    func printLastNodeWithRecursivity(_ node: Node<T>? = nil) {
+        let node = node ?? head
+        
         if node?.next == nil {
-            print(String(describing: node?.data))
+            guard let data = node?.data else {
+                return
+            }
+            
+            console?.print(String(describing: data))
+            return
         }
         return printLastNodeWithRecursivity(node?.next)
     }
@@ -201,7 +245,10 @@ class LinkedList<T: Equatable> {
     // Imprimir primer elemento de una linked list.
 
     func printFirstNode() {
-        print(String(describing: head?.data))
+        guard let data = head?.data else {
+            return
+        }
+        console?.print(String(describing: data))
     }
     
     func getAllElementsWithoutRecursivity() -> [T] {
@@ -217,7 +264,13 @@ class LinkedList<T: Equatable> {
         return nodesToT
     }
     
-    func getAllElementsWithRecursivity(_ node: Node<T>?) -> [T?] {
+    func getAllElementsWithRecursivity(_ node: Node<T>? = nil) -> [T?] {
+        if total == 0 {
+            return []
+        }
+        
+        let node = node ?? head
+
         if node?.next == nil {
             return [node?.data]
         }
